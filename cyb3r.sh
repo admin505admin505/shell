@@ -1,30 +1,24 @@
 #!/bin/bash
 
-# Cybersecurity Toolkit v1.0 for Termux and Other Environments
+# Cybersecurity Toolkit v2.0 for Termux and Other Environments
 # Author: Ethical Hacker
 # Note: For educational purposes and ethical pranks only. Misuse of this script is illegal.
 
 echo "====================================="
-echo "         Cybersecurity Toolkit v1.0  "
+echo "         Cybersecurity Toolkit v2.0  "
 echo "====================================="
 echo "This toolkit is designed for ethical hacking, advanced web penetration testing, and harmless pranks for friends."
 echo "Use responsibly and only with proper authorization."
 echo ""
 
-# Check if the user is root (Not required for Termux but good practice for other systems)
-if [ "$EUID" -ne 0 ] && [ "$(uname -o)" != "Android" ]; then
-  echo "Please run as root (sudo)." >&2
-  exit 1
-fi
-
 # Update and install dependencies
 echo "Updating system and installing dependencies..."
 if command -v apt > /dev/null; then
   apt update && apt upgrade -y
-  apt install -y nmap sqlmap nikto metasploit-framework curl wget hydra john dirb figlet lolcat
+  apt install -y nmap sqlmap nikto metasploit-framework curl wget hydra john dirb figlet lolcat cmatrix toilet python ruby cowsay fortune sl
 elif command -v pkg > /dev/null; then
   pkg update && pkg upgrade -y
-  pkg install -y nmap sqlmap nikto metasploit curl wget hydra john dirb figlet toilet python ruby
+  pkg install -y nmap sqlmap nikto metasploit curl wget hydra john dirb figlet toilet python ruby cowsay fortune sl
 else
   echo "Unsupported package manager. Please install required tools manually."
   exit 1
@@ -62,17 +56,7 @@ infinite_message_prank() {
 # Function for terminal matrix effect
 matrix_effect_prank() {
   echo "Creating a Matrix-style terminal effect..."
-  if command -v cmatrix > /dev/null; then
-    cmatrix
-  else
-    echo "Installing cmatrix..."
-    if command -v apt > /dev/null; then
-      apt install -y cmatrix
-    elif command -v pkg > /dev/null; then
-      pkg install -y cmatrix
-    fi
-    cmatrix
-  fi
+  cmatrix
 }
 
 # Function for opening random websites
@@ -81,6 +65,25 @@ random_website_prank() {
   websites=("https://theuselessweb.com/" "https://pointerpointer.com/" "https://cat-bounce.com/" "https://www.omfgdogs.com/")
   random_website=${websites[$RANDOM % ${#websites[@]}]}
   xdg-open "$random_website" || termux-open-url "$random_website"
+}
+
+# Function for cowsay prank
+cowsay_prank() {
+  echo "Enter a message for the cow:"
+  read -r message
+  cowsay "$message" | lolcat
+}
+
+# Function for fortune cookie prank
+fortune_prank() {
+  echo "Fetching a random fortune..."
+  fortune | cowsay | lolcat
+}
+
+# Function for steam locomotive prank
+train_prank() {
+  echo "Watch the train go by..."
+  sl
 }
 
 # Menu-driven interface
@@ -102,40 +105,43 @@ while true; do
   echo "13) Harmless Trolling: Infinite Message Prank"
   echo "14) Harmless Trolling: Matrix Effect"
   echo "15) Harmless Trolling: Open Random Website"
-  echo "16) Exit"
+  echo "16) Harmless Trolling: Cowsay Prank"
+  echo "17) Harmless Trolling: Fortune Cookie Prank"
+  echo "18) Harmless Trolling: Steam Locomotive Prank"
+  echo "19) Exit"
   echo ""
   read -rp "Enter your choice: " choice
 
   case $choice in
     1)
-      network_scan
+      nmap
       ;;
     2)
-      sql_injection_test
+      sqlmap
       ;;
     3)
-      web_scan
+      nikto
       ;;
     4)
-      brute_force
+      hydra
       ;;
     5)
-      password_crack
+      john
       ;;
     6)
-      directory_enum
+      dirb
       ;;
     7)
-      download_file
+      wget
       ;;
     8)
-      launch_metasploit
+      msfconsole
       ;;
     9)
-      run_xsstrike
+      echo "XSStrike is not pre-installed. Please download it from GitHub."
       ;;
     10)
-      run_wpscan
+      echo "WPScan is not pre-installed. Please download it from GitHub."
       ;;
     11)
       ascii_art_prank
@@ -153,6 +159,15 @@ while true; do
       random_website_prank
       ;;
     16)
+      cowsay_prank
+      ;;
+    17)
+      fortune_prank
+      ;;
+    18)
+      train_prank
+      ;;
+    19)
       echo "Exiting. Stay ethical!"
       exit 0
       ;;
